@@ -1,0 +1,92 @@
+public class Thread1 extends Thread{
+
+   private MovieBookingApp movieBookingApp;
+    int bookingSeat=0;
+    Thread1(MovieBookingApp obj,int seat){
+
+        this.movieBookingApp=obj;
+        bookingSeat=seat;
+    }
+
+
+    public void run(){
+        movieBookingApp.bookSeat(bookingSeat);
+
+    }
+}
+
+
+
+public class Thread2 extends Thread {
+
+
+    private MovieBookingApp movieBookingApp;
+    int bookingSeat = 0;
+
+    Thread2(MovieBookingApp obj, int seat) {
+
+        this.movieBookingApp = obj;
+        bookingSeat = seat;
+    }
+
+    public void run(){
+        movieBookingApp.bookSeat(bookingSeat);
+
+    };
+
+
+
+
+
+}
+
+public class MovieBookingApp {
+
+    private int totalSeats=20;
+
+    public int getTotalSeats() {
+        return totalSeats;
+    }
+
+    synchronized public void  bookSeat(int n){
+        try{
+            for (int i = 0; i <n ; i++) {
+                if(totalSeats!=0){
+                    System.out.println("Book Seat Number is "+totalSeats+ " For User (Name): "+Thread.currentThread().getName());
+                    totalSeats--;
+
+                }else {
+                    throw new  Exception();
+                }
+
+            }
+
+        }catch (Exception e ){
+            System.out.println("The Remain Seat is Zero ");
+
+
+
+        }
+
+
+    }
+
+
+    public void setTotalSeats(int totalSeats) {
+        this.totalSeats = totalSeats;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        MovieBookingApp  movieBookingApp=new MovieBookingApp();
+
+        Thread thread1 = new Thread(new Thread1(movieBookingApp,10), "Alina");
+        Thread thread2 = new Thread(new Thread1(movieBookingApp,12), "Fatima");
+
+        thread1.start();
+        thread2.start();
+
+
+
+    }
